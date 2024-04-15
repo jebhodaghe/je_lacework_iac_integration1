@@ -1,0 +1,16 @@
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+variables:
+  LW_ACCOUNT: $LW_ACCOUNT
+  LW_API_KEY: $LW_API_KEY
+  LW_API_SECRET: $LW_API_SECRET
+
+iac-test-job:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  image: lacework/codesec-iac:latest
+
+  script:
+    - lacework component install iac
+    - ls -alR 
+    - lacework iac tf-scan -d . --no-docker
